@@ -10,6 +10,14 @@ require_once('../app/Controllers/UserController.php');
 $dotenv = Dotenv\Dotenv::createImmutable('../');
 $dotenv->load();
 
+$headers = getallheaders();
+if(!array_key_exists('Authorization', $headers) || $headers['Authorization'] !== 'Bearer '.$_ENV['API_KEY']){
+    echo json_encode([
+        'error' => 'Unauthorized'
+    ]);
+    exit;
+}
+
 $router = new \app\Utils\Router;
 $users = new app\Controllers\UserController();
 
